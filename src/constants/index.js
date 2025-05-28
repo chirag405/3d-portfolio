@@ -28,7 +28,7 @@ import {
   github,
   zustand,
 } from "../assets";
-
+import { hs } from "../assets/hs.png";
 // Import icon for Expense Tracker project
 import { FaWallet } from "react-icons/fa";
 
@@ -146,7 +146,7 @@ const experiences = [
     title: "Flutter Developer Intern",
     company_name: "Higroove Systems",
     company_website: "https://higroovesystems.com/",
-    icon: flutter,
+    icon: hs,
     iconBg: "#E6DEDD",
     date: "June 2024 - Sept 2024",
     points: [
