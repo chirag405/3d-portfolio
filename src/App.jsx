@@ -8,6 +8,7 @@ import Works from "./components/Works";
 import Contact from "./components/Contact";
 import { StarsCanvas } from "./components/canvas";
 import HireMe from "./components/HireMe";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
         <Works />
         <div className="relative z-0">
           <Contact />
-          {/* <StarsCanvas /> */}
+          {/* <ErrorBoundary><StarsCanvas /></ErrorBoundary> */}
         </div>
         <HireMe />
       </div>
