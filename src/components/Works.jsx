@@ -25,12 +25,12 @@ const ProjectCard = ({
           className="relative w-full h-[230px] cursor-pointer"
           onClick={() => window.open(hosted_link, "_blank")}
         >
+          {" "}
           <img
-            src={image}
+            src={typeof image === "object" ? image.src : image}
             alt="project-image"
             className="w-full h-full object-cover rounded-2xl"
           />
-
           <div className="absolute inset-0 flex justify-end m-3 card-img_hover">
             <div
               onClick={() => window.open(hosted_link, "_blank")}
