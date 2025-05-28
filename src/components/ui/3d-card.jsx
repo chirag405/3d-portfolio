@@ -76,19 +76,17 @@ export const CardContainer = ({ children, className, containerClassName }) => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
-  };
-  return (
+  };  return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
         className={cn(
-          "py-20 flex items-center justify-center",
+          "flex items-center justify-center",
           containerClassName
         )}
         style={{
-          perspective: "1000px",
+          perspective: isMobile ? "none" : "1000px",
         }}
       >
-        {" "}
         <div
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
@@ -102,7 +100,7 @@ export const CardContainer = ({ children, className, containerClassName }) => {
             className
           )}
           style={{
-            transformStyle: "preserve-3d",
+            transformStyle: isMobile ? "flat" : "preserve-3d",
           }}
         >
           {children}
@@ -116,9 +114,12 @@ export const CardBody = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "h-auto w-full max-w-sm mx-auto [transform-style:preserve-3d] [&>*]:[transform-style:preserve-3d]",
+        "h-auto w-full max-w-sm mx-auto",
         className
       )}
+      style={{
+        transformStyle: "preserve-3d",
+      }}
     >
       {children}
     </div>
@@ -139,17 +140,34 @@ export const CardItem = ({
 }) => {
   const ref = useRef(null);
   const [isMouseEntered] = useMouseEnter();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || "ontouchstart" in window);
+    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   useEffect(() => {
     handleAnimations();
-  }, [isMouseEntered]);
+  }, [isMouseEntered, isMobile]);
 
   const handleAnimations = () => {
     if (!ref.current) return;
-    if (isMouseEntered) {
-      ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
-    } else {
+    
+    if (isMobile) {
+      // On mobile, keep elements flat with minimal transforms
       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+    } else {
+      // On desktop, use full 3D transforms
+      if (isMouseEntered) {
+        ref.current.style.transform = `translateX(${translateX}px) translateY(${translateY}px) translateZ(${translateZ}px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg)`;
+      } else {
+        ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;
+      }
     }
   };
 

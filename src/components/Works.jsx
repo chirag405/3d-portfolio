@@ -21,7 +21,7 @@ const ProjectCard = ({
       variants={fadeIn("up", "spring", index * 0.5, 0.75)}
       className="w-full sm:w-auto flex justify-center"
     >
-      <CardContainer className="w-full max-w-sm">
+      <CardContainer className="w-full max-w-sm p-2">
         <CardBody className="bg-tertiary p-4 sm:p-5 rounded-2xl w-full h-full min-h-[400px] flex flex-col">
           {/* Project Image with hover effect */}
           <CardItem
@@ -93,8 +93,7 @@ const Works = () => {
         >
           {personalInfo.projectsIntro}
         </motion.p>
-      </div>{" "}
-      <div className="mt-20 flex flex-wrap gap-7 relative">
+      </div>{" "}      <div className="mt-20 flex flex-wrap gap-7 relative">
         {/* Add subtle meteors in background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <Meteors number={5} className="opacity-30" />
