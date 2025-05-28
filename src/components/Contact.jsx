@@ -8,8 +8,7 @@ import emailjs from "@emailjs/browser";
 import { personalInfo, publicUrls } from "../constants";
 import Toast from "./ui/toast";
 import { useWebGL } from "../utils/WebGLContext";
-import { CardBody, CardContainer, CardItem } from "./ui/3d-card";
-import { Input } from "./ui/input"; // Assuming you have an Input component from Aceternity UI
+import { Input } from "./ui/input";
 
 const Contact = () => {
   const formRef = useRef();
@@ -87,9 +86,8 @@ const Contact = () => {
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}
           className="relative flex-[1.4]"
-        >
-          <CardContainer className="w-full">
-            <CardBody className="bg-black-100 p-5 rounded-2xl w-full h-full">
+        >          <div className="bg-black-100 p-5 rounded-2xl w-full h-full relative hover:shadow-xl transition-all duration-300 ease-out group">
+            <div className="relative w-full h-full group-hover:scale-[1.01] transition-transform duration-300 ease-out">
               <div className="flex items-center justify-end space-x-4 absolute top-8 right-4">
                 {Object.keys(publicUrls.socialProfiles).map((socialProfile) => {
                   const profile = publicUrls.socialProfiles[socialProfile];
@@ -106,13 +104,12 @@ const Contact = () => {
                       />
                     </div>
                   );
-                })}
-              </div>
-              <CardItem translateZ={50}>
+                })}              </div>
+              <div>
                 <p className={styles.sectionSubText}>Get in touch</p>
                 <h3 className={styles.sectionHeadText}>Contact.</h3>
-              </CardItem>{" "}
-              <CardItem translateZ={60} className="mt-4 w-full">
+              </div>
+              <div className="mt-4 w-full">
                 <form
                   ref={formRef}
                   onSubmit={handleSubmit}
@@ -166,11 +163,10 @@ const Contact = () => {
                     className="bg-tertiary hover:bg-tertiary/80 py-3 px-8 outline-none w-fit text-white text-base font-bold shadow-md shadow-primary rounded-xl transition-all duration-300 ease-in-out border border-electric-purple"
                   >
                     {loading ? "Sending..." : "Send"}
-                  </button>
-                </form>
-              </CardItem>
-            </CardBody>
-          </CardContainer>
+                  </button>                </form>
+              </div>
+            </div>
+          </div>
         </motion.div>{" "}
         <motion.div
           variants={slideIn("right", "tween", 0.2, 1)}
