@@ -86,7 +86,9 @@ const Contact = () => {
         <motion.div
           variants={slideIn("left", "tween", 0.2, 1)}
           className="relative flex-[1.4]"
-        >          <div className="bg-black-100 p-5 rounded-2xl w-full h-full relative hover:shadow-xl transition-all duration-300 ease-out group">
+        >
+          {" "}
+          <div className="bg-black-100 p-5 rounded-2xl w-full h-full relative hover:shadow-xl transition-all duration-300 ease-out group">
             <div className="relative w-full h-full group-hover:scale-[1.01] transition-transform duration-300 ease-out">
               <div className="flex items-center justify-end space-x-4 absolute top-8 right-4">
                 {Object.keys(publicUrls.socialProfiles).map((socialProfile) => {
@@ -104,7 +106,8 @@ const Contact = () => {
                       />
                     </div>
                   );
-                })}              </div>
+                })}{" "}
+              </div>
               <div>
                 <p className={styles.sectionSubText}>Get in touch</p>
                 <h3 className={styles.sectionHeadText}>Contact.</h3>
@@ -163,7 +166,8 @@ const Contact = () => {
                     className="bg-tertiary hover:bg-tertiary/80 py-3 px-8 outline-none w-fit text-white text-base font-bold shadow-md shadow-primary rounded-xl transition-all duration-300 ease-in-out border border-electric-purple"
                   >
                     {loading ? "Sending..." : "Send"}
-                  </button>                </form>
+                  </button>{" "}
+                </form>
               </div>
             </div>
           </div>
