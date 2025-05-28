@@ -5,6 +5,7 @@ import {
   web,
   javascript,
   typescript,
+  nextJs,
   reactjs,
   tailwind,
   nodejs,
@@ -25,9 +26,16 @@ import {
   polmitra,
   linkedIn,
   github,
+  zustand,
 } from "../assets";
-// Example SVG code for an expense tracker icon
+
+// Import icon for Expense Tracker project
 import { FaWallet } from "react-icons/fa";
+
+// Create a placeholder image for Expense Tracker project
+const expenseTrackerImg =
+  "https://via.placeholder.com/400x230?text=Expense+Tracker";
+
 const navigationPaths = {
   home: "/",
   about: "about",
@@ -138,7 +146,7 @@ const experiences = [
     title: "Flutter Developer Intern",
     company_name: "Higroove Systems",
     company_website: "https://higroovesystems.com/",
-    icon: crmnext,
+    icon: flutter,
     iconBg: "#E6DEDD",
     date: "June 2024 - Sept 2024",
     points: [
@@ -331,7 +339,7 @@ const projects = [
         color: "purple-text-gradient",
       },
     ],
-    image: FaWallet, // Replace with your actual image import
+    image: expenseTrackerImg, // Using placeholder image
     hosted_link: "https://github.com/chirag405/expense-tracker", // Replace with actual link
   },
   {
