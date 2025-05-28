@@ -1,13 +1,7 @@
-import logo from "./logo.svg";
-import backend from "./backend.png";
-import creator from "./creator.png";
-import mobile from "./mobile.png";
-import web from "./web.png";
 import github from "./github.png";
 import linkedIn from "./linkedIn.png";
-import menu from "./menu.svg";
+
 import close from "./close.svg";
-import demo from "./demo.png";
 
 import css from "./tech/css.png";
 import git from "./tech/git.png";
@@ -23,6 +17,8 @@ import angular from "./tech/angular.png";
 import redux from "./tech/redux.png";
 import tailwind from "./tech/tailwind.png";
 import typescript from "./tech/typescript.png";
+import menu from "./menu.svg";
+import demo from "./demo.png";
 // Using placeholder imports since the actual image files are missing
 import zustand from "./tech/zustand.png";
 
@@ -43,16 +39,11 @@ import polmitra from "./projects/polmitra.png";
 import hs from "./company/hs.png";
 
 export {
-  logo,
+  menu,
+  demo,
   hs,
-  backend,
-  creator,
-  mobile,
-  web,
   github,
   linkedIn,
-  demo,
-  menu,
   close,
   css,
   git,

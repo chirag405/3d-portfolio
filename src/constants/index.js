@@ -1,8 +1,4 @@
 import {
-  mobile,
-  backend,
-  creator,
-  web,
   javascript,
   typescript,
   nextJs,
@@ -42,6 +38,7 @@ const navigationPaths = {
   about: "about",
   work: "work",
   contact: "contact",
+  services: "services",
 };
 
 export const navLinks = [
@@ -54,29 +51,33 @@ export const navLinks = [
     title: "Work",
   },
   {
+    id: navigationPaths.services,
+    title: "Services",
+  },
+  {
     id: navigationPaths.contact,
     title: "Contact",
   },
 ];
 
-const services = [
-  {
-    title: "React Developer",
-    icon: web,
-  },
-  {
-    title: "Flutter Developer",
-    icon: mobile,
-  },
-  {
-    title: "React Native Developer",
-    icon: backend,
-  },
-  {
-    title: "AI ML Developer",
-    icon: creator,
-  },
-];
+// const services = [
+//   {
+//     title: "React Developer",
+//     icon: web,
+//   },
+//   {
+//     title: "Flutter Developer",
+//     icon: mobile,
+//   },
+//   {
+//     title: "React Native Developer",
+//     icon: backend,
+//   },
+//   {
+//     title: "AI ML Developer",
+//     icon: creator,
+//   },
+// ];
 
 const technologies = [
   {
@@ -151,10 +152,10 @@ const experiences = [
     iconBg: "#E6DEDD",
     date: "June 2024 - Sept 2024",
     points: [
-      "Reduced AP response calls and response time by 40% using Hive local database for efficient storage and retrieval.",
-      "Optimized background processes and battery usage with BloC.",
-      "Developed 5 fully functional Flutter apps.",
-      "Collaborated with Android team to build native features using Kotlin.",
+      "Developed and maintained cross-platform mobile applications using Flutter, ensuring consistent performance across Android and iOS platforms. ",
+      "Implemented responsive and adaptive UI components using Flutter widgets, delivering smooth user experiences on devices of varying screen sizes.",
+      "Integrated RESTful APIs and third-party services, enabling dynamic data handling and enhancing app functionality with real-time updates.",
+      "Optimized app performance and resolved bugs, contributing to faster load times, reduced crashes, and overall app stability during development cycles.",
     ],
   },
 ];
@@ -316,7 +317,7 @@ const projects = [
       },
     ],
     image: pilpal, // Replace with your actual image import
-    hosted_link: "https://your-pilpal-link.com/", // Replace with actual link
+    hosted_link: "https://github.com/chirag405/PilPal-medicine-reminder", // Replace with actual link
   },
   {
     name: "Expense Tracker",
@@ -402,7 +403,6 @@ const publicUrls = {
 };
 
 export {
-  services,
   technologies,
   experiences,
   projects,

@@ -1,5 +1,5 @@
 import { PointMaterial, Points, Preload } from "@react-three/drei";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { random } from "maath";
 import React, { Suspense, useRef, useState } from "react";
 
