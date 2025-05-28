@@ -15,22 +15,64 @@ const MouseEnterContext = createContext(undefined);
 export const CardContainer = ({ children, className, containerClassName }) => {
   const containerRef = useRef(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  const handleMouseMove = (e) => {
+  useEffect(() => {
+    // Detect if device is mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  const handleMove = (clientX, clientY) => {
     if (!containerRef.current) return;
     const { left, top, width, height } =
       containerRef.current.getBoundingClientRect();
-    const x = (e.clientX - left - width / 2) / 25;
-    const y = (e.clientY - top - height / 2) / 25;
+    const x = (clientX - left - width / 2) / 25;
+    const y = (clientY - top - height / 2) / 25;
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
+  const handleMouseMove = (e) => {
+    if (isMobile) return; // Disable mouse effects on mobile
+    handleMove(e.clientX, e.clientY);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isMobile) return; // Only handle touch on mobile
+    e.preventDefault();
+    const touch = e.touches[0];
+    if (touch) {
+      handleMove(touch.clientX, touch.clientY);
+    }
+  };
+
   const handleMouseEnter = (e) => {
+    if (isMobile) return;
+    setIsMouseEntered(true);
+    if (!containerRef.current) return;
+  };
+
+  const handleTouchStart = (e) => {
+    if (!isMobile) return;
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
   const handleMouseLeave = (e) => {
+    if (isMobile) return;
+    if (!containerRef.current) return;
+    setIsMouseEntered(false);
+    containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (!isMobile) return;
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -45,12 +87,14 @@ export const CardContainer = ({ children, className, containerClassName }) => {
         style={{
           perspective: "1000px",
         }}
-      >
-        <div
+      >        <div
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
           className={cn(
             "flex items-center justify-center relative transition-all duration-200 ease-linear",
             className
@@ -70,7 +114,7 @@ export const CardBody = ({ children, className }) => {
   return (
     <div
       className={cn(
-        "h-96 w-96 [transform-style:preserve-3d]  [&>*]:[transform-style:preserve-3d]",
+        "h-auto w-full max-w-sm mx-auto [transform-style:preserve-3d] [&>*]:[transform-style:preserve-3d]",
         className
       )}
     >
