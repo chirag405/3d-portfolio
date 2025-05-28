@@ -76,13 +76,11 @@ export const CardContainer = ({ children, className, containerClassName }) => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
-  };  return (
+  };
+  return (
     <MouseEnterContext.Provider value={[isMouseEntered, setIsMouseEntered]}>
       <div
-        className={cn(
-          "flex items-center justify-center",
-          containerClassName
-        )}
+        className={cn("flex items-center justify-center", containerClassName)}
         style={{
           perspective: isMobile ? "none" : "1000px",
         }}
@@ -113,10 +111,7 @@ export const CardContainer = ({ children, className, containerClassName }) => {
 export const CardBody = ({ children, className }) => {
   return (
     <div
-      className={cn(
-        "h-auto w-full max-w-sm mx-auto",
-        className
-      )}
+      className={cn("h-auto w-full max-w-sm mx-auto", className)}
       style={{
         transformStyle: "preserve-3d",
       }}
@@ -157,7 +152,7 @@ export const CardItem = ({
 
   const handleAnimations = () => {
     if (!ref.current) return;
-    
+
     if (isMobile) {
       // On mobile, keep elements flat with minimal transforms
       ref.current.style.transform = `translateX(0px) translateY(0px) translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg)`;

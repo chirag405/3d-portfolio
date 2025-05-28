@@ -93,7 +93,8 @@ const Works = () => {
         >
           {personalInfo.projectsIntro}
         </motion.p>
-      </div>{" "}      <div className="mt-20 flex flex-wrap gap-7 relative">
+      </div>{" "}
+      <div className="mt-20 flex flex-wrap gap-7 relative">
         {/* Add subtle meteors in background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <Meteors number={5} className="opacity-30" />
