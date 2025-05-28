@@ -17,7 +17,7 @@ const ProjectCard = ({
   hosted_link,
 }) => {
   return (
-    <motion.div 
+    <motion.div
       variants={fadeIn("up", "spring", index * 0.5, 0.75)}
       className="w-full sm:w-auto flex justify-center"
     >
@@ -51,12 +51,19 @@ const ProjectCard = ({
 
           {/* Project title and description */}
           <CardItem translateZ={40} className="mt-4 sm:mt-5 flex-grow">
-            <h3 className="text-white font-bold text-[20px] sm:text-[24px] leading-tight">{name}</h3>
-            <p className="mt-2 text-secondary text-[13px] sm:text-[14px] leading-relaxed">{description}</p>
+            <h3 className="text-white font-bold text-[20px] sm:text-[24px] leading-tight">
+              {name}
+            </h3>
+            <p className="mt-2 text-secondary text-[13px] sm:text-[14px] leading-relaxed">
+              {description}
+            </p>
           </CardItem>
 
           {/* Project tags */}
-          <CardItem translateZ={60} className="mt-3 sm:mt-4 flex flex-wrap gap-1 sm:gap-2">
+          <CardItem
+            translateZ={60}
+            className="mt-3 sm:mt-4 flex flex-wrap gap-1 sm:gap-2"
+          >
             {tags.map((tag) => (
               <p
                 key={`${name}-${tag.name}`}
@@ -79,7 +86,6 @@ const Works = () => {
         <p className={styles.sectionSubText}>My work</p>
         <h2 className={styles.sectionHeadText}>Projects.</h2>
       </motion.div>
-
       <div className="w-full flex">
         <motion.p
           variants={fadeIn("", "", 0.1, 1)}
@@ -87,7 +93,8 @@ const Works = () => {
         >
           {personalInfo.projectsIntro}
         </motion.p>
-      </div>      <div className="mt-20 flex flex-wrap gap-7 relative">
+      </div>{" "}
+      <div className="mt-20 flex flex-wrap gap-7 relative">
         {/* Add subtle meteors in background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
           <Meteors number={5} className="opacity-30" />

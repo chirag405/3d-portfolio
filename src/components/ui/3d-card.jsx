@@ -20,13 +20,13 @@ export const CardContainer = ({ children, className, containerClassName }) => {
   useEffect(() => {
     // Detect if device is mobile
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+      setIsMobile(window.innerWidth <= 768 || "ontouchstart" in window);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   const handleMove = (clientX, clientY) => {
@@ -87,7 +87,9 @@ export const CardContainer = ({ children, className, containerClassName }) => {
         style={{
           perspective: "1000px",
         }}
-      >        <div
+      >
+        {" "}
+        <div
           ref={containerRef}
           onMouseEnter={handleMouseEnter}
           onMouseMove={handleMouseMove}
