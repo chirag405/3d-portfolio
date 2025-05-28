@@ -40,9 +40,11 @@ import plateai from "./projects/plateai.png";
 import chatalytic from "./projects/chatalytic.png";
 import pilpal from "./projects/pilpal.png";
 import polmitra from "./projects/polmitra.png";
+import hs from "./company/hs.png";
 
 export {
   logo,
+  hs,
   backend,
   creator,
   mobile,

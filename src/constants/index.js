@@ -27,8 +27,9 @@ import {
   linkedIn,
   github,
   zustand,
+  hs,
 } from "../assets";
-import { hs } from "../assets/hs.png";
+
 // Import icon for Expense Tracker project
 import { FaWallet } from "react-icons/fa";
 
