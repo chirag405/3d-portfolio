@@ -23,8 +23,7 @@ import angular from "./tech/angular.png";
 import redux from "./tech/redux.png";
 import tailwind from "./tech/tailwind.png";
 import typescript from "./tech/typescript.png";
-// Using placeholder imports since the actual image files are missing
-import zustand from "./tech/zustand.png";
+import zustand from "./tech/zustand.png"; // Removed misleading comment from here
 
 import flutter from "./tech/flutter.png";
 import langchain from "./tech/langchain.png";
@@ -32,6 +31,13 @@ import tensorflow from "./tech/tensorflow.png";
 import streamlit from "./tech/streamlit.png";
 import supabase from "./tech/supabase.png";
 import cplusplus from "./tech/cplusplus.png";
+
+// Company assets
+import crmnext from "./company/crmnext.png";
+import nickelfox from "./company/nickelfox.png";
+import newgen from "./company/newgen.png";
+import skillrisers from "./company/skillrisers.png";
+import proximus from "./company/proximus.png";
 
 import saywhat from "./projects/saywhat.png";
 import upcraft from "./projects/upcraft.png";
@@ -85,10 +91,5 @@ export {
   chatalytic,
   pilpal,
   polmitra,
-  aptihealthWeb,
-  aptihealthApp,
-  zealWeb,
-  zealApp,
-  rollWeb,
-  rollApp,
+  // Removed aptihealthWeb, aptihealthApp, zealWeb, zealApp, rollWeb, rollApp
 };
