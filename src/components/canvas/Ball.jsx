@@ -7,7 +7,7 @@ const BallCanvas = ({ icon }) => {
         width: '100px', // Or use w-28 h-28 tailwind classes if preferred and Tailwind is set up for JS styling
         height: '100px',
         borderRadius: '50%',
-        backgroundColor: '#fff8eb', // A light background color, similar to a previous attempt
+        backgroundColor: '#fff8eb', // A light background color
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

@@ -331,7 +331,7 @@ const projects = [
         color: "purple-text-gradient",
       },
     ],
-    image: FaWallet, // Replace with your actual image import
+    image: "https://via.placeholder.com/400x230.png?text=Expense+Tracker", // Replace with your actual image import
     hosted_link: "https://github.com/chirag405/expense-tracker", // Replace with actual link
   },
   {
