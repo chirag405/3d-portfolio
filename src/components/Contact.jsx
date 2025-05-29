@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, Suspense, lazy } from "react";
 import SectionWrapper from "../hoc/SectionWrapper";
 import { motion } from "framer-motion";
 import { slideIn } from "../utils/motion";
 import { styles } from "../styles";
-import { EarthCanvas } from "./canvas";
+const EarthCanvas = lazy(() => import("./canvas").then(module => ({ default: module.EarthCanvas })));
 import emailjs from "@emailjs/browser";
 import { personalInfo, publicUrls } from "../constants";
 import Toast from "./ui/toast";
@@ -195,7 +195,7 @@ const Contact = () => {
             className="xl:flex-[0.6] xl:h-auto md:h-[400px] h-[280px]"
           >
             <div ref={ref} className="w-full h-full">
-              {shouldRender && <EarthCanvas />}{" "}
+              {shouldRender && ( <Suspense fallback={null}> <EarthCanvas /> </Suspense> )}{" "}
             </div>
           </motion.div>
         )}

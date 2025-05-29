@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense, lazy } from "react";
 import { styles } from "../styles";
 import { motion } from "framer-motion";
 import { personalInfo } from "../constants";
 import { useWebGL } from "../utils/WebGLContext";
 import { BackgroundBeams } from "./ui/background-beams";
-import LottieHero from "./LottieHero";
+const LottieHero = lazy(() => import("./LottieHero"));
 import { isMobileDevice, isVerySmallScreen } from "../utils/mobileUtils";
 
 const Hero = () => {
@@ -56,7 +56,7 @@ const Hero = () => {
         </div>{" "}
       </div>
       {/* Completely remove Lottie animation on mobile/small screens */}
-      {shouldRender && !isMobile && !isVerySmall && <LottieHero />}
+      {shouldRender && !isMobile && !isVerySmall && ( <Suspense fallback={null}> <LottieHero /> </Suspense> )}
       <div className="absolute xs:bottom-2 bottom-12 w-full flex justify-center items-center z-10">
         <a href="#about">
           <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">
