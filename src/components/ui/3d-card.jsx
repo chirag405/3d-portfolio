@@ -16,10 +16,10 @@ export const CardContainer = ({ children, className, containerClassName }) => {
   const containerRef = useRef(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
   useEffect(() => {
     // Detect if device is mobile
     const checkMobile = () => {
+      if (typeof window === "undefined") return;
       setIsMobile(window.innerWidth <= 768 || "ontouchstart" in window);
     };
 

@@ -387,7 +387,7 @@ I’ve worked on diverse projects ranging from AI-powered tools and chat analyti
 
 const publicUrls = {
   resume:
-    "https://drive.google.com/file/d/1yn5kb1VK-erDRs9o_7AxOaxqkawUrrIV/view?usp=sharing",
+    "https://drive.google.com/file/d/1-yniZ46dPnmoN0tGA27JD7Ec9uOFJHTT/view?usp=sharing",
   socialProfiles: {
     linkedin: {
       title: "linkedin",
