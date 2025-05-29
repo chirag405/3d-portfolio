@@ -22,9 +22,13 @@ const Navbar = () => {
       const direction = currentScrollY - lastScrollY;
       const isAtTop = currentScrollY < 100;
       const isScrollingUp = direction < 0;
+      // Add a small threshold to reliably detect bottom
+      const scrollHeight = document.documentElement.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const isAtBottom = windowHeight + currentScrollY >= scrollHeight - 10; // 10px threshold
 
-      // Show navbar when at top or scrolling up
-      setVisible(isAtTop || isScrollingUp);
+      // Show navbar when at top, scrolling up, or at the bottom
+      setVisible(isAtTop || isScrollingUp || isAtBottom);
       setLastScrollY(currentScrollY);
     };
 
