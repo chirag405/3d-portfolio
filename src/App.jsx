@@ -86,7 +86,9 @@ const App = () => {
                 <Contact />
               </ErrorBoundary>{" "}
               {/* Only render stars on desktop or high-performance mobile */}
-              {(!isMobile || mobileOptimization.enableAnimations) && (
+              {(!isMobile ||
+                (mobileOptimization.enableAnimations &&
+                  !mobileOptimization.hasLimitations)) && (
                 <ErrorBoundary fallbackComponentName="StarsCanvas">
                   <StarsCanvas />
                 </ErrorBoundary>
@@ -94,13 +96,15 @@ const App = () => {
             </div>
             <ErrorBoundary fallbackComponentName="HireMe">
               <HireMe />
-            </ErrorBoundary>
-            {/* Add meteors effect in the background - reduce count on mobile */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-              <ErrorBoundary fallbackComponentName="Meteors">
-                <Meteors number={isMobile ? 10 : 20} />
-              </ErrorBoundary>
-            </div>
+            </ErrorBoundary>{" "}
+            {/* Add meteors effect in the background - completely disable on mobile */}
+            {!isMobile && (
+              <div className="fixed inset-0 overflow-hidden pointer-events-none">
+                <ErrorBoundary fallbackComponentName="Meteors">
+                  <Meteors number={20} />
+                </ErrorBoundary>
+              </div>
+            )}
           </div>
         </WebGLProvider>
       </ErrorBoundary>

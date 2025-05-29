@@ -1,13 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { styles } from "../styles";
 import { motion } from "framer-motion";
 import { personalInfo } from "../constants";
 import { useWebGL } from "../utils/WebGLContext";
 import { BackgroundBeams } from "./ui/background-beams";
 import LottieHero from "./LottieHero";
+import { isMobileDevice, isVerySmallScreen } from "../utils/mobileUtils";
 
 const Hero = () => {
   const { ref, shouldRender } = useWebGL("computers");
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVerySmall, setIsVerySmall] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(isMobileDevice());
+      setIsVerySmall(isVerySmallScreen());
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   return (
     <section
@@ -15,10 +31,12 @@ const Hero = () => {
       className="relative w-full h-screen mx-auto overflow-hidden"
     >
       {" "}
-      {/* Background Beams effect */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <BackgroundBeams className="opacity-60" />
-      </div>
+      {/* Background Beams effect - disable on very small screens */}
+      {!isVerySmall && (
+        <div className="absolute inset-0 w-full h-full z-0">
+          <BackgroundBeams className="opacity-60" />
+        </div>
+      )}
       <div
         className={`${styles.paddingX} absolute top-[120px] max-w-7xl mx-auto flex flex-row items-start gap-5 inset-0 z-10`}
       >
@@ -34,10 +52,11 @@ const Hero = () => {
           <p className={`${styles.heroSubText} text-white-100 mt-2`}>
             A {personalInfo.role}, <br className="sm:block hidden" />
             building web and mobile applications
-          </p>
+          </p>{" "}
         </div>{" "}
       </div>
-      {shouldRender && <LottieHero />}
+      {/* Completely remove Lottie animation on mobile/small screens */}
+      {shouldRender && !isMobile && !isVerySmall && <LottieHero />}
       <div className="absolute xs:bottom-2 bottom-12 w-full flex justify-center items-center z-10">
         <a href="#about">
           <div className="w-[35px] h-[64px] rounded-3xl border-4 border-secondary flex justify-center items-start p-2">

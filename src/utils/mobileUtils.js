@@ -10,8 +10,9 @@ export const isMobileDevice = () => {
   // Check for touch support
   const hasTouch = "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
-  // Check screen width
+  // Check screen width - more aggressive detection for mobile
   const isSmallScreen = window.innerWidth <= 768;
+  const isVerySmallScreen = window.innerWidth <= 480; // Target smallest screens specifically
 
   // Check user agent for mobile patterns
   const mobileRegex =
@@ -23,6 +24,16 @@ export const isMobileDevice = () => {
     "orientation" in window || "DeviceOrientationEvent" in window;
 
   return hasTouch && (isSmallScreen || isMobileUA || hasMobileAPIs);
+};
+
+/**
+ * Check if device is very small screen (for most aggressive optimizations)
+ */
+export const isVerySmallScreen = () => {
+  if (typeof window === "undefined") return false;
+  return (
+    window.innerWidth <= 480 || (isMobileDevice() && window.innerWidth <= 640)
+  );
 };
 
 /**

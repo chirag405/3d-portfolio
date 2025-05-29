@@ -2,26 +2,28 @@ import React, { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import { motion } from "framer-motion";
 import computerAnim from "../assets/lottie/computer.json";
+import { isMobileDevice, isVerySmallScreen } from "../utils/mobileUtils";
 
 const LottieHero = () => {
   const [isMobile, setIsMobile] = useState(false);
+  const [isVerySmall, setIsVerySmall] = useState(false);
 
   useEffect(() => {
-    // Add a listener for changes to the screen size
-    const mediaQuery = window.matchMedia("(max-width: 500px)");
-    setIsMobile(mediaQuery.matches);
-
-    const handleMediaQueryChange = (event) => {
-      setIsMobile(event.matches);
+    const checkMobile = () => {
+      setIsMobile(isMobileDevice());
+      setIsVerySmall(isVerySmallScreen());
     };
-    // Add the callback function as a listener for changes to the media query
-    mediaQuery.addEventListener("change", handleMediaQueryChange);
 
-    // Remove the listener when the component is unmounted
-    return () => {
-      mediaQuery.removeEventListener("change", handleMediaQueryChange);
-    };
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
+
+  // Don't render at all on mobile or very small screens
+  if (isMobile || isVerySmall) {
+    return null;
+  }
 
   return (
     <div className="absolute inset-0 flex items-center justify-center z-0">
@@ -32,11 +34,7 @@ const LottieHero = () => {
         className="w-full h-full flex items-center justify-center"
       >
         {" "}
-        <div
-          className={`${
-            isMobile ? "w-[450px] h-[450px]" : "w-[850px] h-[850px]"
-          }`}
-        >
+        <div className="w-[850px] h-[850px]">
           <Lottie
             animationData={computerAnim}
             autoplay

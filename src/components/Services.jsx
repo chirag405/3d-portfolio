@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { styles } from "../styles";
 import { SectionWrapper } from "../hoc";
@@ -6,6 +6,7 @@ import { fadeIn, textVariant } from "../utils/motion";
 import { navigationPaths } from "../constants";
 import { SpotlightCard } from "./ui/spotlight-card";
 import Lottie from "lottie-react";
+import { isMobileDevice, isVerySmallScreen } from "../utils/mobileUtils";
 
 // Import Lottie animations
 import webDevAnim from "../assets/lottie/web-development.json";
@@ -57,7 +58,12 @@ const ServiceCard = ({
   spotlightColor,
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const lottieRef = useRef(null);
+
+  useEffect(() => {
+    setIsMobile(isMobileDevice() || isVerySmallScreen());
+  }, []);
 
   return (
     <motion.div
@@ -80,7 +86,7 @@ const ServiceCard = ({
           <motion.div
             className="w-36 h-36 mb-6 relative"
             animate={
-              isHovered
+              !isMobile && isHovered
                 ? {
                     y: [0, -8, 0],
                     scale: [1, 1.05, 1],
@@ -93,14 +99,23 @@ const ServiceCard = ({
               ease: "easeInOut",
             }}
           >
-            {" "}
-            <Lottie
-              lottieRef={lottieRef}
-              animationData={animation}
-              loop={true}
-              autoplay={true}
-              className="w-full h-full"
-            />
+            {!isMobile ? (
+              <Lottie
+                lottieRef={lottieRef}
+                animationData={animation}
+                loop={true}
+                autoplay={true}
+                className="w-full h-full"
+              />
+            ) : (
+              <div
+                className={`w-full h-full rounded-lg bg-gradient-to-br ${gradient} flex items-center justify-center`}
+              >
+                <div className="text-white text-4xl font-bold">
+                  {title.split(" ")[0][0]}
+                </div>
+              </div>
+            )}
           </motion.div>
 
           <h3 className="text-white text-[24px] font-bold text-center">

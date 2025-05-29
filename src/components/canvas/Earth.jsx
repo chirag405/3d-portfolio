@@ -1,7 +1,8 @@
 import { Canvas, useThree } from "@react-three/fiber";
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import CanvasLoader from "../Loader";
 import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
+import { isMobileDevice, isVerySmallScreen } from "../../utils/mobileUtils";
 
 const Earth = () => {
   const earth = useGLTF("./planet/scene.gltf");
@@ -12,6 +13,26 @@ const Earth = () => {
 };
 
 const EarthCanvas = () => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVerySmall, setIsVerySmall] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(isMobileDevice());
+      setIsVerySmall(isVerySmallScreen());
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Don't render at all on mobile devices to save performance
+  if (isMobile || isVerySmall) {
+    return null;
+  }
+
   return (
     <Canvas
       shadows

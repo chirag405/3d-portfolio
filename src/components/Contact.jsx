@@ -9,10 +9,13 @@ import { personalInfo, publicUrls } from "../constants";
 import Toast from "./ui/toast";
 import { useWebGL } from "../utils/WebGLContext";
 import { Input } from "./ui/input";
+import { isMobileDevice, isVerySmallScreen } from "../utils/mobileUtils";
 
 const Contact = () => {
   const formRef = useRef();
   const { ref, shouldRender } = useWebGL("earth");
+  const [isMobile, setIsMobile] = useState(false);
+  const [isVerySmall, setIsVerySmall] = useState(false);
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -20,6 +23,19 @@ const Contact = () => {
   });
   const [loading, setLoading] = useState(false);
   const [toast, setToast] = useState(null);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(isMobileDevice());
+      setIsVerySmall(isVerySmallScreen());
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Auto-clear toast after 5 seconds
   useEffect(() => {
@@ -170,16 +186,19 @@ const Contact = () => {
                 </form>
               </div>
             </div>
-          </div>
+          </div>{" "}
         </motion.div>{" "}
-        <motion.div
-          variants={slideIn("right", "tween", 0.2, 1)}
-          className="xl:flex-[0.6] xl:h-auto md:h-[400px] h-[280px]"
-        >
-          <div ref={ref} className="w-full h-full">
-            {shouldRender && <EarthCanvas />}{" "}
-          </div>
-        </motion.div>
+        {/* Completely remove 3D Earth and OrbitControls on mobile/small screens */}
+        {!isMobile && !isVerySmall && (
+          <motion.div
+            variants={slideIn("right", "tween", 0.2, 1)}
+            className="xl:flex-[0.6] xl:h-auto md:h-[400px] h-[280px]"
+          >
+            <div ref={ref} className="w-full h-full">
+              {shouldRender && <EarthCanvas />}{" "}
+            </div>
+          </motion.div>
+        )}
       </div>{" "}
       {toast && (
         <Toast
