@@ -13,7 +13,7 @@ const Stars = () => {
     ref.current.rotation.x -= delta / 10;
     ref.current.rotation.y -= delta / 10;
   });
-
+  //tdfsd
   return (
     <group rotation={[0, 0, Math.PI / 4]}>
       <Points ref={ref} positions={sphere} stride={3} frustumCulled>
