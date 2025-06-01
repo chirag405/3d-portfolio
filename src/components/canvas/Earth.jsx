@@ -28,11 +28,7 @@ const EarthCanvas = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Don't render at all on mobile devices to save performance
-  if (isMobile || isVerySmall) {
-    return null;
-  }
-
+  // Always render the Earth, but adjust scale for mobile devices
   return (
     <Canvas
       shadows
@@ -52,6 +48,7 @@ const EarthCanvas = () => {
           enableZoom={false}
           maxPolarAngle={Math.PI / 2}
           minPolarAngle={Math.PI / 2}
+          rotateSpeed={isMobile || isVerySmall ? 0.3 : 0.5}
         />
         <Earth />
       </Suspense>

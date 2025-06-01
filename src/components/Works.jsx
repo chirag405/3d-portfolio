@@ -182,7 +182,7 @@ const Works = () => {
         {/* Add subtle meteors in background - disable on mobile */}
         {!isMobile && !isVerySmall && (
           <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-            <Meteors number={5} className="opacity-30" />
+            <Meteors number={3} className="opacity-30" />
           </div>
         )}
 

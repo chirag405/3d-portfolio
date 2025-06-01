@@ -64,17 +64,17 @@ export default {
         "hero-pattern": "url('/src/assets/herobg.png')",
       },
       animation: {
-        "meteor-effect": "meteor 5s linear infinite",
+        "meteor-effect": "meteor 7s linear infinite", // Increased duration to 7s for slower meteors
         scroll:
           "scroll var(--animation-duration) var(--animation-direction) linear infinite",
       },
       keyframes: {
         meteor: {
-          "0%": { transform: "rotate(215deg) translateX(0)", opacity: 1 },
-          "70%": { opacity: 1 },
+          "0%": { transform: "rotate(215deg) translateX(0)", opacity: "1" },
+          "70%": { opacity: "1" },
           "100%": {
             transform: "rotate(215deg) translateX(-500px)",
-            opacity: 0,
+            opacity: "0",
           },
         },
         scroll: {

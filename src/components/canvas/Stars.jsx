@@ -6,7 +6,7 @@ import React, { Suspense, useRef, useState } from "react";
 const Stars = () => {
   const ref = useRef();
   const [sphere] = useState(() =>
-    random.inSphere(new Float32Array(5000), { radius: 1.2 })
+    random.inSphere(new Float32Array(2500), { radius: 1.2 })
   );
 
   useFrame((state, delta) => {

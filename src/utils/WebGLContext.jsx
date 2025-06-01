@@ -1,147 +1,150 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useRef } from "react";
+import { supportsWebGL } from "./mobileUtils";
 
-// Create a context to manage WebGL canvas visibility
-const WebGLContext = createContext({
-  registerCanvas: () => {},
-  unregisterCanvas: () => {},
-  isCanvasActive: () => false,
-});
+const WebGLContext = createContext();
 
-// Priority order for Canvas components (higher number = higher priority)
-const CANVAS_PRIORITIES = {
-  computers: 3, // Hero section - highest priority
-  ball: 1, // Tech section - lowest priority
-  earth: 2, // Contact section - medium priority
-  stars: 0, // Background - lowest priority
+export const useWebGL = (canvasId, priority = 0) => {
+  const context = useContext(WebGLContext);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    if (ref.current && context) {
+      // Register this canvas with the WebGL context
+      context.registerCanvas(canvasId, ref, priority);
+
+      return () => {
+        // Unregister on unmount
+        context.unregisterCanvas(canvasId);
+      };
+    }
+  }, [canvasId, context, priority]);
+
+  // Return both the ref and whether this canvas should render
+  return {
+    ref,
+    shouldRender: context ? context.shouldRender(canvasId) : true,
+  };
 };
 
 export const WebGLProvider = ({ children }) => {
-  // Keep track of all registered canvases
-  const [activeCanvases, setActiveCanvases] = useState({});
-  // Track which canvas is currently visible
-  const [visibleCanvases, setVisibleCanvases] = useState({});
+  const [canvases, setCanvases] = useState({});
+  const [activeCanvas, setActiveCanvas] = useState(null);
+  const [hasWebGL, setHasWebGL] = useState(true); // Assume WebGL is supported initially
 
-  // Register a new canvas with a unique ID
-  const registerCanvas = (id, type, isVisible = false) => {
-    setActiveCanvases((prev) => ({
+  // Check for WebGL support on mount
+  useEffect(() => {
+    setHasWebGL(supportsWebGL());
+  }, []);
+
+  // Register a canvas with the context
+  const registerCanvas = (id, ref, priority = 0) => {
+    setCanvases((prev) => ({
       ...prev,
-      [id]: { type, priority: CANVAS_PRIORITIES[type] || 0 },
+      [id]: { ref, priority, visible: false, active: false },
     }));
-
-    if (isVisible) {
-      setVisibleCanvases((prev) => ({
-        ...prev,
-        [id]: { type, priority: CANVAS_PRIORITIES[type] || 0 },
-      }));
-    }
   };
 
-  // Unregister a canvas when it unmounts
+  // Unregister a canvas
   const unregisterCanvas = (id) => {
-    setActiveCanvases((prev) => {
+    setCanvases((prev) => {
       const newCanvases = { ...prev };
       delete newCanvases[id];
       return newCanvases;
     });
+  };
 
-    setVisibleCanvases((prev) => {
-      const newVisible = { ...prev };
-      delete newVisible[id];
-      return newVisible;
+  // Update canvas visibility based on intersection observer
+  const updateCanvasVisibility = (id, isVisible) => {
+    setCanvases((prev) => {
+      if (!prev[id]) return prev;
+
+      return {
+        ...prev,
+        [id]: { ...prev[id], visible: isVisible },
+      };
     });
   };
 
-  // Update a canvas's visibility
-  const updateCanvasVisibility = (id, isVisible) => {
-    if (isVisible) {
-      setVisibleCanvases((prev) => ({
-        ...prev,
-        [id]: activeCanvases[id],
-      }));
-    } else {
-      setVisibleCanvases((prev) => {
-        const newVisible = { ...prev };
-        delete newVisible[id];
-        return newVisible;
-      });
-    }
+  // Determine if a canvas should render
+  const shouldRender = (id) => {
+    // If WebGL is not supported, don't render any 3D canvas
+    if (!hasWebGL) return false;
+
+    // Always render if this is the active canvas
+    if (activeCanvas === id) return true;
+
+    // Otherwise, don't render
+    return false;
   };
 
-  // Determine if a canvas should be active based on its ID and visibility
-  const isCanvasActive = (id) => {
-    // If there are no visible canvases, allow any registered canvas
-    if (Object.keys(visibleCanvases).length === 0) {
-      return activeCanvases[id] !== undefined;
-    }
-
+  // Effect to determine the active canvas based on visibility and priority
+  useEffect(() => {
     // Find the highest priority visible canvas
-    const highestPriorityCanvas = Object.entries(visibleCanvases).reduce(
-      (highest, [currentId, data]) => {
-        return !highest || data.priority > highest.priority
-          ? { id: currentId, priority: data.priority }
-          : highest;
-      },
-      null
+    const visibleCanvases = Object.entries(canvases).filter(
+      ([_, canvas]) => canvas.visible
     );
 
-    // Only activate the highest priority canvas
-    return highestPriorityCanvas && highestPriorityCanvas.id === id;
+    if (visibleCanvases.length === 0) {
+      setActiveCanvas(null);
+      return;
+    }
+
+    // Sort by priority (highest first)
+    visibleCanvases.sort((a, b) => b[1].priority - a[1].priority);
+
+    // Set the highest priority canvas as active
+    const highestPriorityId = visibleCanvases[0][0];
+    setActiveCanvas(highestPriorityId);
+
+    // Update active status in canvases state
+    setCanvases((prev) => {
+      const newCanvases = { ...prev };
+      Object.keys(newCanvases).forEach((id) => {
+        newCanvases[id] = {
+          ...newCanvases[id],
+          active: id === highestPriorityId,
+        };
+      });
+      return newCanvases;
+    });
+  }, [canvases]);
+
+  // Set up intersection observers for all canvas refs
+  useEffect(() => {
+    const observers = {};
+
+    // Create observers for each canvas
+    Object.entries(canvases).forEach(([id, { ref }]) => {
+      if (ref.current && !observers[id]) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              updateCanvasVisibility(id, entry.isIntersecting);
+            });
+          },
+          { threshold: 0.1 } // 10% visibility is enough to consider it "visible"
+        );
+
+        observer.observe(ref.current);
+        observers[id] = observer;
+      }
+    });
+
+    // Cleanup observers on unmount
+    return () => {
+      Object.values(observers).forEach((observer) => observer.disconnect());
+    };
+  }, [canvases]);
+
+  const value = {
+    registerCanvas,
+    unregisterCanvas,
+    shouldRender,
+    activeCanvas,
+    hasWebGL,
   };
 
   return (
-    <WebGLContext.Provider
-      value={{
-        registerCanvas,
-        unregisterCanvas,
-        updateCanvasVisibility,
-        isCanvasActive,
-      }}
-    >
-      {children}
-    </WebGLContext.Provider>
+    <WebGLContext.Provider value={value}>{children}</WebGLContext.Provider>
   );
-};
-
-// Custom hook for components to use the WebGL context
-export const useWebGL = (type) => {
-  const {
-    registerCanvas,
-    unregisterCanvas,
-    updateCanvasVisibility,
-    isCanvasActive,
-  } = useContext(WebGLContext);
-  const [id] = useState(`${type}-${Math.random().toString(36).substr(2, 9)}`);
-  const [isVisible, setIsVisible] = useState(false);
-  const [ref, setRef] = useState(null);
-
-  // Set up intersection observer to detect when component is in viewport
-  useEffect(() => {
-    if (!ref) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const isNowVisible = entry.isIntersecting;
-        setIsVisible(isNowVisible);
-        updateCanvasVisibility(id, isNowVisible);
-      },
-      { threshold: 0.1 } // Consider visible when 10% in viewport
-    );
-
-    observer.observe(ref);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [ref, id, updateCanvasVisibility]);
-
-  // Register canvas on mount, unregister on unmount
-  useEffect(() => {
-    registerCanvas(id, type);
-    return () => unregisterCanvas(id);
-  }, [id, type, registerCanvas, unregisterCanvas]);
-
-  // Check if this canvas should be active
-  const shouldRender = isCanvasActive(id);
-
-  return { ref: setRef, shouldRender, isVisible };
 };

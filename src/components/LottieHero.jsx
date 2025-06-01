@@ -20,11 +20,8 @@ const LottieHero = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Don't render at all on mobile or very small screens
-  if (isMobile || isVerySmall) {
-    return null;
-  }
-
+  // Always render the animation regardless of device type
+  // Only adjust size for mobile devices
   return (
     <div className="absolute inset-0 flex items-center justify-center z-0">
       <motion.div
@@ -34,12 +31,16 @@ const LottieHero = () => {
         className="w-full h-full flex items-center justify-center"
       >
         {" "}
-        <div className="w-[850px] h-[850px]">
+        <div className={`${isMobile || isVerySmall ? "w-[600px] h-[600px]" : "w-[1200px] h-[1200px]"}`}>
           <Lottie
             animationData={computerAnim}
             autoplay
             loop
             className="w-full h-full"
+            rendererSettings={{
+              preserveAspectRatio: "xMidYMid slice",
+              progressiveLoad: true,
+            }}
           />
         </div>
       </motion.div>

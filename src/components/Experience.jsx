@@ -60,7 +60,7 @@ const Experience = () => {
       <div className="mt-20 relative">
         {/* Add subtle meteors in background */}
         <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-          <Meteors number={8} className="opacity-30" />
+          <Meteors number={5} className="opacity-30" />
         </div>
         <div className="relative z-10">
           <Timeline data={timelineData} />
