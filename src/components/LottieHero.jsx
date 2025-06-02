@@ -28,10 +28,16 @@ const LottieHero = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
-        className="w-full h-full flex items-center justify-center"
+        className="w-full h-full flex items-center justify-end pr-10 md:pr-20"
       >
         {" "}
-        <div className={`${isMobile || isVerySmall ? "w-[600px] h-[600px]" : "w-[1200px] h-[1200px]"}`}>
+        <div
+          className={`${
+            isMobile || isVerySmall
+              ? "w-[400px] h-[400px]"
+              : "w-[700px] h-[700px]"
+          }`}
+        >
           <Lottie
             animationData={computerAnim}
             autoplay
